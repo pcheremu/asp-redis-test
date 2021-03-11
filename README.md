@@ -17,7 +17,7 @@ All tasks above are optional. Pay attention that writing Dockerfile is essential
 Some exclusions: 
 
 * You might not have public/private docker repository to push your image in.
-* You may have MiniKube on your local environment or you do not have kubernetes cluster to test your k8s yaml specs.
+* You may not have MiniKube on your local environment nor kubernetes cluster to test your k8s yaml specs.
 
 That's totally fine. You can write in your code comments like: 
 
