@@ -1,0 +1,10 @@
+language: csharp
+mono: none
+dist: bionic
+dotnet: 3.1
+solution: src/AS.Redis.Connector.sln
+install:
+  - dotnet restore
+script:
+  - dotnet build
+  - dotnet test src/AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
