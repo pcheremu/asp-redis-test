@@ -1,9 +1,31 @@
 language: csharp
-mono: none
+#mono: none
 dist: bionic
 dotnet: 3.1
-install:
-  - dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
-script:
-  - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
-  - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+#install:
+#  - dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+#script:
+#  - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+#  - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+stages:
+  - dotnet run test
+  - build docker image tag push
+  - test image
+jobs:
+  include:
+    - stage: dotnet run test
+      script:
+      - dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+      - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+      - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+    - stage: build docker image
+      script:
+      #- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t softek-demo .
+      - docker images
+      - docker tag softek-demo pcheremu/softek-demo
+      #- docker push $DOCKER_USERNAME/softek-demo
+    - stage: test image
+      script: 
+      - docker run softek-demo
+    #- script: docker run softek-demo
