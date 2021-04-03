@@ -24,6 +24,7 @@ jobs:
         - docker
       script:
       #- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker docker builder prune -a 
       - docker build -t softek-demo .
       - docker images
       - docker tag softek-demo pcheremu/softek-demo
