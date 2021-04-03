@@ -12,14 +12,16 @@ RUN dotnet restore
 COPY AS.Redis.Connector/. ./
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS run
 WORKDIR /app
 COPY --from=build /app/out .
 
 # Execute
 ENTRYPOINT ["dotnet", "AS.Redis.Connector.dll"]
 
-FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
+
+
+FROM build AS build1
 WORKDIR /app
 # Configure Envrionment
 #ENV ASPNETCORE_URLS http://+:5000
@@ -33,7 +35,7 @@ RUN dotnet restore
 COPY AS.Redis.Connector.Test/. ./
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:3.1
+FROM run AS run1
 WORKDIR /app
 COPY --from=build /app/out .
 
