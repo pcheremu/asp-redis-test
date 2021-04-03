@@ -23,11 +23,10 @@ jobs:
       services:
         - docker
       script:
-      #- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker docker builder prune -a 
-      - docker build -t softek-demo .
+      #- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
+      - docker build  .
       - docker images
-      - docker tag softek-demo pcheremu/softek-demo
+      #- docker tag softek-demo pcheremu/softek-demo
       #- docker push $DOCKER_USERNAME/softek-demo
     #- stage: test image
     #  script: 
