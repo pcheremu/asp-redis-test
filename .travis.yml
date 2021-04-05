@@ -29,5 +29,8 @@ jobs:
       #- docker push $DOCKER_USERNAME/softek-demo
     - stage: test image
       script: 
-      - docker run softek-demo:latest
+      - docker run -d softek-demo:latest
+      - docker ps
+      - docker stop softek-demo
+      - docker ps
     #- script: docker run softek-demo
