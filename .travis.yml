@@ -24,17 +24,11 @@ jobs:
       - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
       - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
       
-    - stage: build 
+    - stage: build pack publish
       script: 
       - docker build -t $DOCKER_IMAGE .
       - docker images
-      
-    - stage: pack
-      script:
       - docker tag $DOCKER_IMAGE $DOCKER_USER/$DOCKER_IMAGE
-      
-    - stage: publish
-      script:
       after_success:
       - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
       - docker push $DOCKER_USER/$DOCKER_IMAGE
