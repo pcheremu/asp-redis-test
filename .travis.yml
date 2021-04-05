@@ -23,7 +23,7 @@ jobs:
       services:
         - docker
       script: 
-      - docker build -t $DOCKER_USER/softek-demo .
+      - docker build -t softek-demo .
       - docker images
       - docker tag softek-demo $DOCKER_USER/softek-demo
       after_success:
