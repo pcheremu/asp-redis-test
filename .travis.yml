@@ -30,8 +30,10 @@ jobs:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push $DOCKER_USER/softek-demo
     - stage: test image
-      script: 
-      - docker run -d $DOCKER_USER/softek-demo:latest
+      script:
+      - docker images
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker run -d $DOCKER_USER/softek-demo
       - docker ps
       - docker stop $DOCKER_USER/softek-demo
       - docker ps
