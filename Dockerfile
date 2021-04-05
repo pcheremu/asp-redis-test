@@ -35,7 +35,7 @@ RUN dotnet publish AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj -c Rel
 
 FROM run AS run1
 WORKDIR /app
-COPY --from=build /app/test .
+COPY --from=build1 /app/test .
 
 # Execute
 ENTRYPOINT ["dotnet", "AS.Redis.Connector.Test.dll"]
