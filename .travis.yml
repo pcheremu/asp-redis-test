@@ -23,14 +23,14 @@ jobs:
       services:
         - docker
       script: 
-      - docker build -t softek-demo .
+      - docker build -t pcheremu/softek-demo .
       - docker images
       - docker tag softek-demo pcheremu/softek-demo
       #- docker push $DOCKER_USERNAME/softek-demo
     - stage: test image
       script: 
-      - docker run -d softek-demo:latest
+      - docker run -d pcheremu/softek-demo:latest
       - docker ps
-      - docker stop softek-demo
+      - docker stop pcheremu/softek-demo
       - docker ps
-    #- script: docker run softek-demo
+
