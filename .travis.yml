@@ -7,11 +7,15 @@ services:
 
 before_install:
  - docker system prune -a -f
-
+ 
+env:
+  global:
+    - DOCKER_IMAGE=softek-demo
+    
 script:
 jobs:
   include:
-    - stage: test
+    - stage: run csharp test
       language: csharp
       dotnet: 3.1
       mono: none
@@ -19,16 +23,22 @@ jobs:
       - dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
       - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
       - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
-    - stage: build pack publish
-      services:
-        - docker
+      
+    - stage: build 
       script: 
-      - docker build -t softek-demo .
+      - docker build -t $DOCKER_IMAGE .
       - docker images
-      - docker tag softek-demo $DOCKER_USER/softek-demo
+      
+    - stage: pack
+      script:
+      - docker tag $DOCKER_IMAGE $DOCKER_USER/$DOCKER_IMAGE
+      
+    - stage: publish
+      script:
       after_success:
       - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-      - docker push $DOCKER_USER/softek-demo
+      - docker push $DOCKER_USER/$DOCKER_IMAGE
+      
     - stage: test image
       script:
       - docker images
@@ -36,7 +46,7 @@ jobs:
       - docker network create -d bridge softek-network
       - docker run --name redis -d -p 5000:6379 --network softek-network redis
       - docker ps
-      - docker run -d -p 5000:80 --network softek-network --name asp-web --link redis $DOCKER_USER/softek-demo
+      - docker run -d -p 5000:80 --network softek-network --name asp-web --link redis $DOCKER_USER/$DOCKER_IMAGE
       - docker ps
       - docker stop $(docker ps -a -q)
       - docker ps
