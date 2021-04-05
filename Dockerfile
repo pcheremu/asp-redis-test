@@ -7,10 +7,10 @@ EXPOSE 5000
 #ENV REDIS_CONNECTIONSTRING localhost:6379,
 
 COPY AS.Redis.Connector/*.csproj ./AS.Redis.Connector/
-RUN dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.csproj
+RUN dotnet restore AS.Redis.Connector/AS.Redis.Connector.csproj
 
 COPY AS.Redis.Connector/. ./AS.Redis.Connector/
-RUN dotnet publish AS.Redis.Connector.Test/AS.Redis.Connector.csproj -c Release -o connector
+RUN dotnet publish AS.Redis.Connector/AS.Redis.Connector.csproj -c Release -o connector
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS run
 WORKDIR /app
