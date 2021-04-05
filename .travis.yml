@@ -27,7 +27,7 @@ jobs:
       - docker images
       - docker tag softek-demo pcheremu/softek-demo
       #- docker push $DOCKER_USERNAME/softek-demo
-    #- stage: test image
-    #  script: 
-    #  - docker run softek-demo
+    - stage: test image
+      script: 
+      - docker run softek-demo:latest
     #- script: docker run softek-demo
