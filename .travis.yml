@@ -27,12 +27,12 @@ jobs:
       - docker images
       - docker tag softek-demo $DOCKER_USER/softek-demo
       after_success:
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
       - docker push $DOCKER_USER/softek-demo
     - stage: test image
       script:
       - docker images
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
       - docker run -d $DOCKER_USER/softek-demo
       - docker ps
       - docker stop $(docker ps -a -q)
