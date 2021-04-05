@@ -12,15 +12,6 @@ env:
 
 before_install:
  - docker system prune -a -f
- - sudo sh -c 'echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list'
- - sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
- - sudo apt-get update
- - sudo apt-key update
- - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
- - chmod +x docker-compose
- - sudo mv docker-compose /usr/local/bin
- - docker --version
- - docker-compose --version
 
 script:
 jobs:
@@ -37,11 +28,11 @@ jobs:
       services:
         - docker
       script: 
-      #- docker build --no-cache .
+      - docker build --no-cache -t softek-demo .
       - docker images
-      - docker-compose ${COMPOSE_FILES} build --no-cache
-      - docker-compose up -d
-      #- docker tag softek-demo pcheremu/softek-demo
+      #- docker-compose ${COMPOSE_FILES} build --no-cache
+      #- docker-compose up -d
+      - docker tag softek-demo pcheremu/softek-demo
       #- docker push $DOCKER_USERNAME/softek-demo
     #- stage: test image
     #  script: 
