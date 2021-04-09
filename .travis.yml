@@ -16,6 +16,7 @@ script:
 jobs:
   include:
     - stage: run docker-compose
+      script:
       - docker-compose up -d
       # Verify service availability
       - docker-compose ps
