@@ -32,7 +32,6 @@ jobs:
 #      - dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
 #      - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
 #      - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
-      
 #    - stage: build pack publish
 #      script: 
 #      - docker build -t $DOCKER_IMAGE .
@@ -41,7 +40,6 @@ jobs:
 #      after_success:
 #      - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 #      - docker push $DOCKER_USER/$DOCKER_IMAGE
-      
     - stage: test image
       script:
       - docker images
