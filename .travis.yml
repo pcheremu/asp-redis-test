@@ -13,33 +13,11 @@ env:
     - DOCKER_IMAGE=softek-demo
     - DOCKER_ENGINE_VERSION=17.06.0
     - DOCKER_COMPOSE_VERSION=3.3
+    - REDIS_CONNECTIONSTRING=localhost:5001
     
 script:
 jobs:
   include:
-    - stage: run docker-compose
-      script:
-      - docker-compose up -d
-      # Verify service availability
-      - docker-compose ps
-      after_success:
-      - deactivate
-    - stage: run csharp test
-      language: csharp
-      dotnet: 3.1
-      mono: none
-      script:
-      - dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
-      - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
-      - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
-    - stage: build pack publish
-      script: 
-      - docker build -t $DOCKER_IMAGE .
-      - docker images
-      - docker tag $DOCKER_IMAGE $DOCKER_USER/$DOCKER_IMAGE
-      after_success:
-      - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-      - docker push $DOCKER_USER/$DOCKER_IMAGE
     - stage: test image
       script:
       - docker images
@@ -49,8 +27,8 @@ jobs:
       - docker ps
       - docker run -d -p 5000:80 --network softek-network --name asp-web --link redis $DOCKER_USER/$DOCKER_IMAGE
       - docker ps
-#      - curl -X POST -H "Content-Type: application/json" \ -d '{"date": "2019-07-16T19:04:05.7257911-06:00", "temperatureC": 52, "temperatureF": 125, "summary": "Mild"}' \ http://localhost:5000/WeatherForecast
-#      - curl 127.0.0.1:5000/weatherforecast
+      - curl -d "@data.json" -X POST http://localhost:5000/weatherforecast
+      - curl http://localhost:5000/weatherforecas
       - docker stop $(docker ps -a -q)
       - docker ps
       
