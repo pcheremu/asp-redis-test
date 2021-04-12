@@ -24,7 +24,7 @@ services:
 
     # The Application needs a connection string for Redis, this just needs to be the Redis Service name as defined below
     # Pass it in as an Environmental Variable
-    environment:
+    #environment:
       #- RedisConnection=redis
       #- ASPNETCORE_ENVIRONMENT=Development
       #- REDIS_CONNECTIONSTRING=localhost:6379
