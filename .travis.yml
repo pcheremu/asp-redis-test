@@ -24,9 +24,37 @@ jobs:
       - docker-compose up -d
       # Verify service availability
       - docker-compose ps
-      - curl http://localhost:5000/weatherforecas
+      #- curl http://localhost:5000/weatherforecas
       after_success:
       - docker-compose down
-    
+    - stage: run csharp test
+      language: csharp
+      dotnet: 3.1
+      mono: none
+      script:
+      - dotnet restore AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+      - dotnet build AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+      - dotnet test AS.Redis.Connector.Test/AS.Redis.Connector.Test.csproj
+    - stage: build pack publish
+      script: 
+      - docker build -t $DOCKER_IMAGE .
+      - docker images
+      - docker tag $DOCKER_IMAGE $DOCKER_USER/$DOCKER_IMAGE
+      after_success:
+      - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+      - docker push $DOCKER_USER/$DOCKER_IMAGE
+    - stage: test image
+      script:
+      - docker images
+      - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+      - docker network create -d bridge softek-network
+      - docker run --name redis -d -p 5001:6379 --network softek-network redis
+      - docker ps
+      - docker run -d -p 5000:80 --network softek-network --name asp-web --link redis $DOCKER_USER/$DOCKER_IMAGE
+      - docker ps
+      #- curl -d "@data.json" -X POST https://localhost:5000/weatherforecast
+      #- curl https://localhost:5000/weatherforecas
+      - docker stop $(docker ps -a -q)
+      - docker ps
       
 
