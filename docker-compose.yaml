@@ -17,7 +17,7 @@ services:
 
     # Set access ports for localhost on the left
     ports:
-      - "5000:80"
+      - "5000:5000"
     # Configure a link to Redis
     links:
       - "redis"
@@ -25,7 +25,7 @@ services:
     # The Application needs a connection string for Redis, this just needs to be the Redis Service name as defined below
     # Pass it in as an Environmental Variable
     environment:
-      - RedisConnection=redis
+      #- RedisConnection=redis
       #- ASPNETCORE_ENVIRONMENT=Development
       #- REDIS_CONNECTIONSTRING=localhost:6379
 
